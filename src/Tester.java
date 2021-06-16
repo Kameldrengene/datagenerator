@@ -9,7 +9,8 @@ import java.util.ArrayList;
 
 public class Tester {
 
-    String root = "/Users/mikkeldanielsen/Desktop/data2/";
+    String root = "/Users/mikkeldanielsen/Desktop/";
+    String outputPath = "/Users/mikkeldanielsen/Desktop/";
     String inputPng = "_img.png";
     String inputTxt = "_data.txt";
     int strokeWidth = 2;
@@ -43,6 +44,13 @@ public class Tester {
 
             for (int i = 0; i < txt.size(); i++) { //Loop through all entries in location data
                 RectData data = lineToRectData(txt.get(i).split(" "));
+
+                if(data.type.equals("backside")) {
+                    data.x = (int) (data.x + (data.width * 0.5) / 2);
+                    data.height = (int) (data.height * 0.5);
+                    data.width = (int) (data.width * 0.5);
+                }
+
                 g.drawRect(data.x, data.y, data.width, data.height);
                 g.drawString(data.type, data.x + strokeWidth, data.y - strokeWidth);
             }
@@ -50,13 +58,14 @@ public class Tester {
             g.dispose();
 
             //Export result
-            ImageIO.write(canvas, "PNG", new File(root + name + "_test.png"));
+            ImageIO.write(canvas, "PNG", new File(outputPath + name + "_test.png"));
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    //Extract data from line
     private RectData lineToRectData(String[] line) {
         RectData out = new RectData();
 

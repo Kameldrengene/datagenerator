@@ -10,21 +10,22 @@ import javax.imageio.ImageIO;
 public class Generator {
 
     //Constants
+    static int scale = 1; //.txt data only tested with scale = 1
     int columns = 7;
-    int padding = 50;
-    int cardHorizontalSpacing = 20;
-    int cardVerticalSpacing = 90;
-    static int bgWidth = 1920;
-    static int bgHeight = 1400;
-    int bondaryBoxWidth = 32;
-    int bondaryBoxHeight = 80;
+    int padding = 50 * scale;
+    int cardHorizontalSpacing = 20 * scale;
+    int cardVerticalSpacing = 90 * scale;
+    static int bgWidth = 1920 * scale;
+    static int bgHeight = 1400 * scale;
+    int bondaryBoxWidth = 32 * scale;
+    int bondaryBoxHeight = 80 * scale;
     double cardRatio = 1.4;
     int cardWidth = (bgWidth - (columns - 1) * cardHorizontalSpacing - 2 * padding) / columns;
     int cardHeight = (int) (cardWidth * cardRatio);
     String cardRoot = "cards/";
     String bgRoot = "surfaces/";
     int maxCardsInCol = 7;
-    double backCardChance = 0.2;
+    double backCardChance = 1.0;
     static String cardTypes[] = { //Could be enum
             "2c", "2d", "2h", "2s",
             "3c", "3d", "3h", "3s",
@@ -47,17 +48,16 @@ public class Generator {
     String bgFileType = ".jpg";
     String outputImgType = ".png";
     String outputTxtType = ".txt";
-    String outputPath = "/Users/mikkeldanielsen/Desktop/data2/";
+    String outputPath = "/Users/mikkeldanielsen/Desktop/";
     int numberOfSurfaces = 177;
-    int rotationDegrees = 10;
-    int cardEdgeTop = 12;
-    int cardEdgeSide = 8;
+    int cardEdgeTop = 12 * scale;
+    int cardEdgeSide = 8 * scale;
     int maxDegrees = 10;
 
     Random rand = new Random();
     FileWriter txtWriter;
 
-    int loop = 2000;
+    int loop = 1;
 
     public static void main(String[] args) throws IOException {
         new Generator();
@@ -66,6 +66,7 @@ public class Generator {
     public Generator() {
         for (int i = 0; i < loop; i++) {
             generateRandomBoard(i);
+            new Tester(i);
         }
     }
 
@@ -166,7 +167,7 @@ public class Generator {
     //Adds cardWidth and cardVerticalPadding to x and y
     private void writeBoundaryBoxBackside(String type, double x, double y, double radians) {
 
-
+        //Calculate positions
         double length, height;
         height = Math.sin(Math.abs(radians)) * cardWidth + Math.cos(Math.abs(radians)) * cardVerticalSpacing;
         if(radians < 0) length = Math.tan(Math.abs(radians)) * height + Math.cos(Math.abs(radians)) * cardWidth;
@@ -271,10 +272,6 @@ public class Generator {
             e.printStackTrace();
         }
         return null;
-    }
-
-    private BufferedImage rotateImage(BufferedImage image, int degrees) {
-       return null;
     }
 
     //src: https://www.geeksforgeeks.org/image-processing-java-set-7-creating-random-pixel-image/
